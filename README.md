@@ -30,7 +30,7 @@ Mapy.cz users can follow these steps:
 	- have this repository downloaded on your PC,
 	- are able to run Python scripts on your PC,
 	- have [`pip` installed](https://pip.pypa.io/en/stable/installation/),
-	- have installed the pip packages listed in `requirements.txt`.
+	- have installed the pip packages listed in `requirements.txt` (e.g. by running `pip install -r requirements.txt`).
 1. Assuming all of your trees are stored in Mapy.cz as points in a folder of yours, on a desktop, navigate to that folder and export the contents as GPX -- click the 3 dots above your folder's name and choose `Export` (no need to change any of the export options).
 1. Place the downloaded file into the downloaded repository.
 1. In a console/terminal/command line, navigate to the downloaded repository, e.g. with a command like `cd ~/Downloads/fruitmap-scripts` on MacOS/Linux.
