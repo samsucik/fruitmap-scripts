@@ -84,7 +84,7 @@ def convert_data(args, supported_tree_names):
 
 
 def main(args):
-    with open("supported_tree_names.json", "r") as f:
+    with open("supported_tree_names.json", "r", encoding="utf-8") as f:
         supported_tree_names = json.load(f)
     add_synonyms(supported_tree_names)
 
