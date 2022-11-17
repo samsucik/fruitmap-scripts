@@ -1,3 +1,4 @@
 html
 *.json
 *.gpx
+!supported_trees.json
