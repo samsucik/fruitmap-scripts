@@ -17,8 +17,11 @@ unsupported_names = [
 
 def add_synonyms(supported_tree_names):
     hardcoded_synonyms = {
+        "Oskeruše": ["oskorusa"],
+        "Mišpule": ["mispula"],
+        "Arónie": ["aronia"],
         "Mirabelka": ["myrobalan"],
-        "Jeřáb": ["jar vtac"],
+        "Jeřáb": ["jar vtac", "jarabina"],
         "Slivka": ["belica", "kralovka"]
     }
     for name, synonyms_list in hardcoded_synonyms.items():
