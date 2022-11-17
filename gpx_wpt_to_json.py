@@ -10,7 +10,6 @@ synonyms = defaultdict(list)
 unsupported_names = [
     "Muchovník",
     "Kiwi",
-    "Mandľa",
     "Rešetliak",
     "Cesnak"
 ]
@@ -32,13 +31,23 @@ def add_synonyms(supported_tree_names):
 
 
 def strip_accents(s):
-    return ''.join(c for c in unicodedata.normalize('NFD', s) if unicodedata.category(c) != 'Mn')
+    return ''.join(c for c in unicodedata.normalize(
+        'NFD', s) if unicodedata.category(c) != 'Mn')
 
 
 def get_args():
-    parser = argparse.ArgumentParser(description="Convert GPX waypoint data into JSON data.")
-    parser.add_argument("--input_file", type=str, help="The GPX file to process", required=True)
-    parser.add_argument("--output_file", type=str, help="The output JSON file name", required=True)
+    parser = argparse.ArgumentParser(
+        description="Convert GPX waypoint data into JSON data.")
+    parser.add_argument(
+        "--input_file",
+        type=str,
+        help="The GPX file to process",
+        required=True)
+    parser.add_argument(
+        "--output_file",
+        type=str,
+        help="The output JSON file name",
+        required=True)
     return parser.parse_args()
 
 
@@ -71,13 +80,19 @@ def convert_data(args, supported_tree_names):
     with open(args.input_file, 'r') as gpx_file:
         gpx = gpxpy.parse(gpx_file)
 
-        print("MANUALLY CHECK THE EXTRACTED NAMES BELOW AND MAKE ANY NECESSARY CORRECTIONS IN YOUR GPX FILE:")
+        print(
+            "MANUALLY CHECK THE EXTRACTED NAMES BELOW AND MAKE ANY NECESSARY CORRECTIONS IN YOUR GPX FILE:")
         for waypoint in gpx.waypoints:
-            extracted_name = get_closest_supported_tree_name(waypoint.name, supported_tree_names)
+            extracted_name = get_closest_supported_tree_name(
+                waypoint.name,
+                supported_tree_names)
             print(f"'{extracted_name}': '{waypoint.name}'")
             if extracted_name is not None:
-                data.append({"name": extracted_name, "lat": waypoint.latitude, "lon": waypoint.longitude})
-        print("MANUALLY CHECK THE EXTRACTED NAMES ABOVE AND MAKE ANY NECESSARY CORRECTIONS IN YOUR GPX FILE.")
+                data.append({"name": extracted_name,
+                             "lat": waypoint.latitude,
+                             "lon": waypoint.longitude})
+        print(
+            "MANUALLY CHECK THE EXTRACTED NAMES ABOVE AND MAKE ANY NECESSARY CORRECTIONS IN YOUR GPX FILE.")
 
     with open(args.output_file, "w") as out:
         json.dump(data, out)
