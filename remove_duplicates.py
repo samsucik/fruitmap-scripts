@@ -43,44 +43,59 @@ def make_mapy_cz_url(lat, lon):
     return f"https://sk.mapy.cz/turisticka?source=coor&id={lon}%2C{lat}&x={lon}&y={lat}&z=19&base=ophoto"
 
 
+def user_wants_to_keep_tree():
+    print("Do you want to add the new tree anyway? (y/n): ")
+    with keyboard.Events() as events:
+        while True:
+            # Block for as much as possible
+            event = events.get(1e6)
+            if event and isinstance(event, keyboard.Events.Release):
+                if event.key == keyboard.KeyCode.from_char("y"):
+                    return True
+                elif event.key == keyboard.KeyCode.from_char("n"):
+                    return False
+
+
+def get_likely_existing_duplicates(tree, all_trees, distance_threshold):
+    species_mask = all_trees["species_id"] == tree["species_id"]
+    all_trees.loc[species_mask, "distance [m]"] = all_trees[species_mask].apply(
+        lambda row: 1000 * distance(
+            lat1=tree["lat"],
+            lon1=tree["lon"],
+            lat2=row["lat"],
+            lon2=row["lon"]), axis=1)
+    return all_trees[species_mask].query(f"`distance [m]` < {distance_threshold}")
+
+
+def report_likely_duplicates(tree, likely_duplicates):
+    print(f"\n=== Likely duplicate(s) found for tree: ===\n\t{tree} ({make_mapy_cz_url(tree['lat'], tree['lon'])})")
+    print("Existing trees:")
+    for i, duplicate in likely_duplicates.iterrows():
+        print(f"\tuser {int(duplicate['user_id'])}, d={duplicate['distance [m]']:.1f}m: {make_mapy_cz_url(duplicate['lat'], duplicate['lon'])}")
+
+
 def main(args):
     args = get_args()
+
+    distance_threshold = 5  # 5m
 
     all_trees = pd.read_json(args.all_trees_file)
 
     with open(args.input_file, "r", encoding="utf-8") as f:
-        trees_to_add = json.load(f)
+        trees_to_be_added = json.load(f)
 
     trees_to_add_excl_duplicates = []
-    for tree in trees_to_add:
-        mask = all_trees["species_id"] == tree["species_id"]
-        all_trees.loc[mask, "distance [m]"] = all_trees[mask].apply(
-            lambda row: 1000 * distance(
-                lat1=tree["lat"],
-                lon1=tree["lon"],
-                lat2=row["lat"],
-                lon2=row["lon"]), axis=1)
-        distance_threshold = 5  # 5m
-        likely_duplicates = all_trees[mask].query(f"`distance [m]` < {distance_threshold}")
+    for tree in trees_to_be_added:
+        likely_duplicates = get_likely_existing_duplicates(
+            tree,
+            all_trees,
+            distance_threshold)
+
         if len(likely_duplicates) > 0:
-            print(f"\n=== Likely duplicate(s) found for tree: ===\n\t{tree} ({make_mapy_cz_url(tree['lat'], tree['lon'])})")
-            print("Existing trees:")
-            for i, duplicate in likely_duplicates.iterrows():
-                print(f"\tuser {int(duplicate['user_id'])}, d={duplicate['distance [m]']:.1f}m: {make_mapy_cz_url(duplicate['lat'], duplicate['lon'])}")
+            report_likely_duplicates(tree, likely_duplicates)
 
-            print("Do you want to add the new tree anyway? (y/n): ")
-            valid_option_entered = False
-            with keyboard.Events() as events:
-                while not valid_option_entered:
-                    # Block for as much as possible
-                    event = events.get(1e6)
-                    if event.key == keyboard.KeyCode.from_char("y"):
-                        print("YES")
-                        trees_to_add_excl_duplicates.append(tree)
-                        valid_option_entered = True
-                    elif event.key == keyboard.KeyCode.from_char("n"):
-                        valid_option_entered = True
-
+            if user_wants_to_keep_tree():
+                trees_to_add_excl_duplicates.append(tree)
         else:
             trees_to_add_excl_duplicates.append(tree)
 
