@@ -77,7 +77,7 @@ def get_closest_supported_tree_name(text, supported_tree_names):
     return closest_name
 
 
-def convert_data(args, supported_tree_names):
+def convert_data(args, supported_trees):
     data = []
 
     with open(args.input_file, 'r') as gpx_file:
@@ -88,10 +88,13 @@ def convert_data(args, supported_tree_names):
         for waypoint in gpx.waypoints:
             extracted_name = get_closest_supported_tree_name(
                 waypoint.name,
-                supported_tree_names)
+                [t["name"] for t in supported_trees])
             print(f"'{extracted_name}': '{waypoint.name}'")
             if extracted_name is not None:
+                species_id = [
+                    t for t in supported_trees if t["name"] == extracted_name][0]["species_id"]
                 data.append({"name": extracted_name,
+                             "species_id": species_id,
                              "lat": waypoint.latitude,
                              "lon": waypoint.longitude})
         print(
@@ -107,7 +110,7 @@ def main(args):
     supported_tree_names = [tree["name"] for tree in supported_trees]
     add_synonyms(supported_tree_names)
 
-    convert_data(args, supported_tree_names)
+    convert_data(args, supported_trees)
 
 
 if __name__ == '__main__':
