@@ -71,7 +71,11 @@ def report_likely_duplicates(tree, likely_duplicates):
     print(f"\n=== Likely duplicate(s) found for tree: ===\n\t{tree} ({make_mapy_cz_url(tree['lat'], tree['lon'])})")
     print("Existing trees:")
     for i, duplicate in likely_duplicates.iterrows():
-        print(f"\tuser with ID {int(duplicate['user_id'])} added the same species {duplicate['distance [m]']:.1f}m away: {make_mapy_cz_url(duplicate['lat'], duplicate['lon'])}")
+        if type(duplicate["user_id"]) == float:
+            user_str = "you chose to add"
+        else:
+            user_str = f"user with ID {int(duplicate['user_id'])} added"
+        print(f"\t{user_str} the same species {duplicate['distance [m]']:.1f}m away: {make_mapy_cz_url(duplicate['lat'], duplicate['lon'])}")
 
 
 def main(args):
@@ -96,8 +100,10 @@ def main(args):
 
             if user_wants_to_keep_tree():
                 trees_to_add_excl_duplicates.append(tree)
+                all_trees = pd.concat([all_trees, pd.DataFrame([tree])])
         else:
             trees_to_add_excl_duplicates.append(tree)
+            all_trees = pd.concat([all_trees, pd.DataFrame([tree])])
 
     with open(args.output_file, "w", encoding="utf-8") as f:
         json.dump(trees_to_add_excl_duplicates, f)
