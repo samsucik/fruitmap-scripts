@@ -58,3 +58,15 @@ Given that you've created a JSON file like in the above example (doesn't matter 
 1. Hit Enter. This should run the pasted code. Ideally, no error messages appear in the console, only some informative messages from the pasted code.
 	_Note that no markers will be shown on the map but your tree data should now be silently transferred to the page with the map._ **Do not add any trees manually while also adding some with the code. Save your manually added trees, then refresh and add trees with the code. Similarly, don't paste/run the code multiple times. If you need to do it, first, refresh the page.**
 1. Hit `Uložiť` (`Save`) to actually save all the transferred data. To check that the data has indeed been uploaded successfully, head over to the overview of your trees at [fruitmap.org/moj-ucet](https://www.fruitmap.org/moj-ucet) and check that the new trees are there. If they're not, either try to figure it out yourself or contact me :-)
+
+### Detecting duplicates (optional step)
+
+Before bulk-entering your JSON data on fruitmap.org, you might want to check if some of the trees already exist in the fruitmap.org system. To do this, first, get a local list of the trees already in the system:
+```shell
+python get_all_mapped_trees.py --output_file all_trees.json
+```
+Now, given that the trees you're planning to add are stored in `data.json`, run the following command to detect likely duplicates, choose whether or not you want to add your tree anyway, and produce a new file with the trees you actually want to map:
+```shell
+python remove_duplicates.py --input_file=data.json --all_trees_file=all_trees.json --output_file=data_without_duplicates.json
+```
+Now, use the data from `data_without_duplicates.json` and bulk-enter them on `fruitmap.org` as you'd normally do.
