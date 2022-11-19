@@ -22,7 +22,8 @@ def add_synonyms(supported_tree_names):
         "Arónie": ["aronia"],
         "Mirabelka": ["myrobalan"],
         "Jeřáb": ["jar vtac", "jarabina"],
-        "Slivka": ["belica", "kralovka"]
+        "Slivka": ["belica", "kralovka"],
+        "Gaštan jedlý": ["gastan"]
     }
     for name, synonyms_list in hardcoded_synonyms.items():
         synonyms[name] += synonyms_list
