@@ -71,7 +71,7 @@ def report_likely_duplicates(tree, likely_duplicates):
     print(f"\n=== Likely duplicate(s) found for tree: ===\n\t{tree} ({make_mapy_cz_url(tree['lat'], tree['lon'])})")
     print("Existing trees:")
     for i, duplicate in likely_duplicates.iterrows():
-        print(f"\tuser {int(duplicate['user_id'])}, d={duplicate['distance [m]']:.1f}m: {make_mapy_cz_url(duplicate['lat'], duplicate['lon'])}")
+        print(f"\tuser with ID {int(duplicate['user_id'])} added the same species {duplicate['distance [m]']:.1f}m away: {make_mapy_cz_url(duplicate['lat'], duplicate['lon'])}")
 
 
 def main(args):
