@@ -11,7 +11,11 @@ unsupported_names = [
     "Muchovník",
     "Kiwi",
     "Rešetliak",
-    "Cesnak"
+    "Cesnak",
+    "Kustovnica",
+    "Borievka",
+    "Cherry laurel",
+    "Rozmarín"
 ]
 
 
@@ -21,7 +25,7 @@ def add_synonyms(supported_tree_names):
         "Mišpule": ["mispula"],
         "Arónie": ["aronia"],
         "Mirabelka": ["myrobalan"],
-        "Jeřáb": ["jar vtac", "jarabina"],
+        "Jeřáb": ["jar vtac", "jarabina", "jar pros"],
         "Slivka": ["belica", "kralovka"],
         "Gaštan jedlý": ["gastan"]
     }
