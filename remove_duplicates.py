@@ -3,6 +3,7 @@ import argparse
 import pandas as pd
 from math import radians, cos, sin, asin, sqrt
 from pynput import keyboard
+import math
 
 
 def get_args():
@@ -71,11 +72,11 @@ def report_likely_duplicates(tree, likely_duplicates):
     print(f"\n=== Likely duplicate(s) found for tree: ===\n\t{tree} ({make_mapy_cz_url(tree['lat'], tree['lon'])})")
     print("Existing trees:")
     for i, duplicate in likely_duplicates.iterrows():
-        if type(duplicate["user_id"]) == float:
+        if math.isnan(duplicate["user_id"]):
             user_str = "you chose to add"
         else:
             user_str = f"user with ID {int(duplicate['user_id'])} added"
-        print(f"\t{user_str} the same species {duplicate['distance [m]']:.1f}m away: {make_mapy_cz_url(duplicate['lat'], duplicate['lon'])}")
+        print(f"\t{user_str} the same species ({duplicate['species_id']}) {duplicate['distance [m]']:.1f}m away: {make_mapy_cz_url(duplicate['lat'], duplicate['lon'])}")
 
 
 def main(args):
