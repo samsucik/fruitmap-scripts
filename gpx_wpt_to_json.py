@@ -18,7 +18,8 @@ unsupported_names = [
     "Rozmarín",
     "Hrachor",
     "Ľubovník",
-    "Vtáčnica"
+    "Vtáčnica",
+    "Uchovec"
 ]
 
 
