@@ -16,10 +16,21 @@ unsupported_names = [
     "Borievka",
     "Cherry laurel",
     "Rozmarín",
-    "Hrachor",
+    "Uchovec",
     "Ľubovník",
-    "Vtáčnica",
-    "Uchovec"
+    "Repík",
+    "Skorocel",
+    "Harmanček",
+    "Ruža",
+    "Zlatobyľ",
+    "Sírovec",
+    "Levanduľa",
+    "Koralovec",
+    "Viničový podpník",
+    "Mahalebka",
+    "Hrachor",
+    "Ďatelina",
+    "Zemežlč"
 ]
 
 
@@ -28,11 +39,19 @@ def add_synonyms(supported_tree_names):
         "Oskeruše": ["oskorusa"],
         "Mišpule": ["mispula"],
         "Arónie": ["aronia"],
-        "Mirabelka": ["myrobalan"],
-        "Jeřáb": ["jar vtac", "jarabina", "jar pros", "mukyna"],
+        "Mirabelka": ["myrobalan", "myro"],
+        "Jeřáb": ["jar vtac", "jarabina", "jar pros", "mukyna", "jar mukyna"],
         "Slivka": ["belica", "kralovka"],
         "Gaštan jedlý": ["gastan"],
+        "Kustovnica": ["goji"],,
+        "Orech": ["or"],
+        "Baza čierna": ["baz"],
+        "Viničový podpník": ["amerikan"],
+        "Trnka": ["trniek"],
+        "Ríbezľa čierna": ["cierna ribezlas"],
         "Kustovnica": ["goji"],
+        "Šípka": ["ruza"],
+        "Hrozno": ["vinic"]
     }
     for name, synonyms_list in hardcoded_synonyms.items():
         synonyms[name] += synonyms_list
