@@ -29,14 +29,14 @@ Mapy.cz users can follow these steps:
 1. Make sure you:
 	- have this repository downloaded on your PC,
 	- are able to run Python scripts on your PC,
-	- have [`pip` installed](https://pip.pypa.io/en/stable/installation/),
-	- have installed the pip packages listed in `requirements.txt` (e.g. by running `pip install -r requirements.txt`).
+	- have Python 3.11, and [`poetry`](https://python-poetry.org/docs/#installation) installed,
+	- have installed the project's dependencies by running `poetry install --no-root`.
 1. Assuming all of your trees are stored in Mapy.cz as points in a folder of yours, on a desktop, navigate to that folder and export the contents as GPX -- click the 3 dots above your folder's name and choose `Export` (no need to change any of the export options).
 1. Place the downloaded file into the downloaded repository.
 1. In a console/terminal/command line, navigate to the downloaded repository, e.g. with a command like `cd ~/Downloads/fruitmap-scripts` on MacOS/Linux.
 1. Run the script that converts your downloaded GPX data into a fruitmap.org-friendly JSON format (replace `export.gpx` with your GPX file's name):
 	```shell
-	python gpx_wpt_to_json.py --input_file=export.gpx --output_file=data.json
+	poetry run python gpx_wpt_to_json.py --input_file=export.gpx --output_file=data.json
 	```
 	_Note that the script tries to match the names of your points from Mapy.cz to the exact Slovak tree names used by fruitmap.org. If your Mapy.cz data doesn't use Slovak, the conversion process is likely to be unusable for you. (Though, adding support for English isn't too difficult!) You should still be able to use the 2nd step, though (entering data on fruitmap.org)._
 1. Inspect the output of the previous command to see if the program matched your Mapy.cz point names to the correct fruitmap.org tree names. The program also excludes trees not currently supported by fruitmap.org, but it might not always work as expected and deserves a manual inspection. If something about the output looks incorrect, try to fix this by rewriting stuff in your exported GPX data and then running the above command again.
@@ -63,10 +63,10 @@ Given that you've created a JSON file like in the above example (doesn't matter 
 
 Before bulk-entering your JSON data on fruitmap.org, you might want to check if some of the trees already exist in the fruitmap.org system. To do this, first, get a local list of the trees already in the system:
 ```shell
-python get_all_mapped_trees.py --output_file all_trees.json
+poetry run python get_all_mapped_trees.py --output_file all_trees.json
 ```
 Now, given that the trees you're planning to add are stored in `data.json`, run the following command to detect likely duplicates, choose whether or not you want to add your tree anyway, and produce a new file with the trees you actually want to map:
 ```shell
-python remove_duplicates.py --input_file=data.json --all_trees_file=all_trees.json --output_file=data_without_duplicates.json
+poetry run python remove_duplicates.py --input_file=data.json --all_trees_file=all_trees.json --output_file=data_without_duplicates.json
 ```
 Now, use the data from `data_without_duplicates.json` and bulk-enter them on `fruitmap.org` as you'd normally do.
